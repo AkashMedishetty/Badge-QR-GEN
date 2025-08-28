@@ -256,6 +256,150 @@ body {
   border: 1px solid #f5c6cb;
 }
 
+/* iOS PDF Viewer Styles */
+.ios-pdf-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 2rem;
+  text-align: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.ios-pdf-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.ios-pdf-header p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.ios-pdf-preview {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pdf-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.ios-pdf-preview h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.ios-pdf-preview p {
+  font-size: 1rem;
+  opacity: 0.8;
+}
+
+.ios-view-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  margin: 1rem 0;
+}
+
+.ios-view-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.ios-view-button:active {
+  transform: translateY(0);
+}
+
+.ios-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 300px;
+  margin: 1rem 0;
+}
+
+.ios-view-button-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.ios-view-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ios-instructions {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: left;
+  max-width: 400px;
+}
+
+.ios-instructions h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.ios-instructions ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ios-instructions li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.ios-instructions li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: #4ade80;
+  font-weight: bold;
+}
+
+.retry-button {
+  background: #0070f3;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background 0.3s;
+}
+
+.retry-button:hover {
+  background: #0051a2;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .admin-container {
@@ -273,5 +417,34 @@ body {
   
   .admin-header p {
     font-size: 1rem;
+  }
+
+  .ios-pdf-container {
+    padding: 1rem;
+  }
+
+  .ios-pdf-header h1 {
+    font-size: 2rem;
+  }
+
+  .ios-pdf-header p {
+    font-size: 1rem;
+  }
+
+  .ios-pdf-preview {
+    padding: 1.5rem;
+  }
+
+  .pdf-icon {
+    font-size: 3rem;
+  }
+
+  .ios-view-button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .ios-button-group {
+    max-width: 280px;
   }
 }

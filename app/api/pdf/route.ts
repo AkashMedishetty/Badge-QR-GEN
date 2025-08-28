@@ -61,11 +61,20 @@ export async function GET(request: NextRequest) {
     return new NextResponse(pdfBuffer as any, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'inline',
+        'Content-Disposition': 'inline; filename="Event Brochure.pdf"',
         'Cache-Control': 'public, max-age=86400',
         'Content-Length': pdfBuffer.length.toString(),
         'Accept-Ranges': 'bytes',
         'X-Content-Type-Options': 'nosniff',
+        // Allow iframe embedding for mobile browsers
+        'X-Frame-Options': 'SAMEORIGIN',
+        'Content-Security-Policy': "frame-ancestors 'self'",
+        // Ensure PDF opens properly in mobile browsers
+        'Pragma': 'public',
+        'Expires': new Date(Date.now() + 86400000).toUTCString(),
+        // Additional headers for better mobile compatibility
+        'Cross-Origin-Embedder-Policy': 'unsafe-none',
+        'Cross-Origin-Opener-Policy': 'same-origin',
       },
     })
   } catch (error) {

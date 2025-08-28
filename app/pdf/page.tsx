@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 
 export default function PDFViewer() {
-  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
@@ -79,9 +79,6 @@ export default function PDFViewer() {
             border: 'none',
             background: 'white'
           }}
-          // Production optimization attributes
-          allow="fullscreen"
-          sandbox="allow-same-origin allow-scripts allow-forms"
         />
         {error === 'iframe-failed' && (
           <div className="ios-pdf-container">
@@ -143,9 +140,6 @@ export default function PDFViewer() {
           border: 'none',
           background: 'white'
         }}
-        // Production optimization attributes
-        allow="fullscreen"
-        sandbox="allow-same-origin allow-scripts allow-forms"
       />
     </div>
   )
