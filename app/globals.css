@@ -42,7 +42,7 @@ body {
   }
 }
 
-/* PDF Viewer Styles */
+/* PDF Viewer Styles - Optimized for performance */
 .pdf-container {
   width: 100vw;
   height: 100vh;
@@ -53,6 +53,8 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  will-change: transform;
+  contain: layout style paint;
 }
 
 .pdf-viewer {
@@ -64,6 +66,13 @@ body {
   margin: 0;
   padding: 0;
   display: block;
+  will-change: transform;
+  contain: layout style paint;
+  /* Optimize for mobile rendering */
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .pdf-loading {

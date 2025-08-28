@@ -2,13 +2,38 @@ import { NextRequest, NextResponse } from 'next/server'
 import { readFile } from 'fs/promises'
 import { join } from 'path'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
-    // Path to your PDF file - you can place your brochure PDF here
-    const pdfPath = join(process.cwd(), 'public', 'brochure.pdf')
+    // Try multiple possible paths for the PDF file
+    const possiblePaths = [
+      join(process.cwd(), 'public', 'brochure.pdf'),
+      join(process.cwd(), 'brochure.pdf'),
+      join(process.cwd(), 'app', 'public', 'brochure.pdf'),
+      '/tmp/brochure.pdf', // Vercel temp directory
+    ]
     
-    // Read the PDF file
-    const pdfBuffer = await readFile(pdfPath)
+    let pdfBuffer: Buffer | null = null
+    let pdfPath = ''
+    
+    // Try to read from each possible path
+    for (const path of possiblePaths) {
+      try {
+        pdfBuffer = await readFile(path)
+        pdfPath = path
+        break
+      } catch (error) {
+        // Continue to next path
+        continue
+      }
+    }
+    
+    if (!pdfBuffer) {
+      console.error('PDF not found in any of the expected locations:', possiblePaths)
+      return new NextResponse('PDF not found', { status: 404 })
+    }
     
     // Get range header for partial content support
     const range = request.headers.get('range')

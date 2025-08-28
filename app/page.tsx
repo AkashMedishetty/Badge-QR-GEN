@@ -56,7 +56,7 @@ export default function PDFViewer() {
   return (
     <div className="pdf-container">
       <iframe
-        src="/api/pdf#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH&zoom=50"
+        src="/brochure.pdf#toolbar=0&navpanes=0&scrollbar=0&statusbar=0&messages=0&view=FitH&zoom=50"
         className="pdf-viewer"
         title="Event Brochure"
         onError={() => setError('Failed to load PDF. Please try again.')}
