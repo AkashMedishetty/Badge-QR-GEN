@@ -22,6 +22,18 @@ export default function PDFViewer() {
     const isChromeOnIOS = /CriOS/.test(userAgent) || (/Chrome/.test(userAgent) && /iPad|iPhone|iPod/.test(userAgent))
     
     const isIOS = isIOSDevice || isIOSByPlatform || isIOSByTouchPoints || isChromeOnIOS
+    
+    // Debug logging
+    console.log('User Agent:', userAgent)
+    console.log('Platform:', navigator.platform)
+    console.log('isIOSDevice:', isIOSDevice)
+    console.log('isIOSByPlatform:', isIOSByPlatform)
+    console.log('isChromeOnIOS:', isChromeOnIOS)
+    console.log('Final isIOS:', isIOS)
+    
+    // Temporary: Force iOS mode for testing (remove this later)
+    // setIsIOS(true)
+    
     setIsIOS(isIOS)
 
     // Simple timeout
@@ -146,6 +158,21 @@ export default function PDFViewer() {
   // Non-iOS rendering with iframe
   return (
     <div className="pdf-container">
+      {/* Debug info */}
+      <div style={{
+        position: 'absolute',
+        top: '10px',
+        left: '10px',
+        background: 'rgba(0,0,0,0.8)',
+        color: 'white',
+        padding: '10px',
+        borderRadius: '5px',
+        fontSize: '12px',
+        zIndex: 1000
+      }}>
+        Debug: isIOS = {isIOS.toString()}
+      </div>
+      
       <iframe
         src="/brochure.pdf"
         className="pdf-viewer"
