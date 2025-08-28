@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       const chunksize = (end - start) + 1
       const chunk = pdfBuffer.slice(start, end + 1)
       
-      return new NextResponse(chunk, {
+      return new NextResponse(chunk as any, {
         status: 206,
         headers: {
           'Content-Range': `bytes ${start}-${end}/${pdfBuffer.length}`,
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
     }
     
     // Return the PDF with proper headers for mobile optimization
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(pdfBuffer as any, {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'inline',
