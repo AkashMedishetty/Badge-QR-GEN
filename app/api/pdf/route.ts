@@ -57,11 +57,15 @@ export async function GET(request: NextRequest) {
       })
     }
     
+    // Check if this is a download request (for iOS)
+    const isDownload = request.headers.get('accept')?.includes('application/pdf') && 
+                      request.headers.get('user-agent')?.includes('iPhone|iPad|iPod')
+    
     // Return the PDF with proper headers for mobile optimization
     return new NextResponse(pdfBuffer as any, {
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'inline; filename="Event Brochure.pdf"',
+        'Content-Disposition': isDownload ? 'attachment; filename="Event Brochure.pdf"' : 'inline; filename="Event Brochure.pdf"',
         'Cache-Control': 'public, max-age=86400',
         'Content-Length': pdfBuffer.length.toString(),
         'Accept-Ranges': 'bytes',

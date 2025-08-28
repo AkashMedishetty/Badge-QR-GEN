@@ -32,14 +32,20 @@ export default function PDFViewer() {
     return () => clearTimeout(timeout)
   }, [])
 
+  const handleIOSDownload = () => {
+    // Download PDF directly on iOS - works in all browsers
+    const link = document.createElement('a')
+    link.href = '/api/pdf'
+    link.download = 'Event Brochure.pdf'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   const handleIOSView = () => {
     // Open PDF in new tab for iOS - works in all browsers
     window.open('/api/pdf', '_blank')
-  }
-
-  const handleDirectView = () => {
-    // Direct navigation to PDF - works in all browsers
-    window.location.href = '/api/pdf'
   }
 
   if (loading) {
@@ -93,43 +99,44 @@ export default function PDFViewer() {
         />
         {error === 'iframe-failed' && (
           <div className="ios-pdf-container">
-            <div className="ios-pdf-header">
-              <h1>Event Brochure</h1>
-              <p>Choose how you'd like to view the brochure</p>
-            </div>
+                      <div className="ios-pdf-header">
+            <h1>Event Brochure</h1>
+            <p>Download the PDF to view all pages with full functionality</p>
+          </div>
+          
+          <div className="ios-pdf-preview">
+            <div className="pdf-icon">📄</div>
+            <h2>Event Brochure.pdf</h2>
+            <p>Download to view all pages with full functionality</p>
+          </div>
+
+          <div className="ios-button-group">
+            <button 
+              onClick={handleIOSDownload}
+              className="ios-view-button"
+            >
+              📥 Download PDF
+            </button>
             
-            <div className="ios-pdf-preview">
-              <div className="pdf-icon">📄</div>
-              <h2>Event Brochure.pdf</h2>
-              <p>Select your preferred viewing method</p>
-            </div>
+            <button 
+              onClick={handleIOSView}
+              className="ios-view-button ios-view-button-secondary"
+            >
+              Open in New Tab
+            </button>
+          </div>
 
-            <div className="ios-button-group">
-              <button 
-                onClick={handleIOSView}
-                className="ios-view-button"
-              >
-                Open in New Tab
-              </button>
-              
-              <button 
-                onClick={handleDirectView}
-                className="ios-view-button ios-view-button-secondary"
-              >
-                View in Current Tab
-              </button>
-            </div>
-
-            <div className="ios-instructions">
-              <h3>Viewing Options:</h3>
-              <ul>
-                <li><strong>New Tab:</strong> Opens PDF in a new tab (recommended)</li>
-                <li><strong>Current Tab:</strong> Replaces this page with the PDF</li>
-                <li>Use pinch-to-zoom to navigate</li>
-                <li>Scroll vertically to read all pages</li>
-                <li>Works in all browsers (Chrome, Safari, Firefox, etc.)</li>
-              </ul>
-            </div>
+          <div className="ios-instructions">
+            <h3>Best Experience on iOS:</h3>
+            <ul>
+              <li><strong>📥 Download PDF:</strong> Get the full PDF with all pages (recommended)</li>
+              <li><strong>Open in New Tab:</strong> View in browser (may show only first page)</li>
+              <li>Downloaded PDF opens in your default PDF app</li>
+              <li>Full zoom, scroll, and navigation features</li>
+              <li>Works offline after download</li>
+              <li>No browser limitations</li>
+            </ul>
+          </div>
           </div>
         )}
       </div>

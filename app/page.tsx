@@ -32,14 +32,20 @@ export default function PDFViewer() {
     return () => clearTimeout(timeout)
   }, [])
 
+  const handleIOSDownload = () => {
+    // Download PDF directly on iOS - works in all browsers
+    const link = document.createElement('a')
+    link.href = '/api/pdf'
+    link.download = 'Event Brochure.pdf'
+    link.target = '_blank'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   const handleIOSView = () => {
     // Open PDF in new tab for iOS - works in all browsers
     window.open('/api/pdf', '_blank')
-  }
-
-  const handleDirectView = () => {
-    // Direct navigation to PDF - works in all browsers
-    window.location.href = '/api/pdf'
   }
 
   if (loading) {
@@ -95,40 +101,40 @@ export default function PDFViewer() {
           <div className="ios-pdf-container">
                       <div className="ios-pdf-header">
             <h1>Event Brochure</h1>
-            <p>iOS browsers have PDF viewing limitations. Choose your preferred method:</p>
+            <p>Download the PDF to view all pages with full functionality</p>
           </div>
             
             <div className="ios-pdf-preview">
               <div className="pdf-icon">📄</div>
               <h2>Event Brochure.pdf</h2>
-              <p>Select your preferred viewing method</p>
+              <p>Download to view all pages with full functionality</p>
             </div>
 
             <div className="ios-button-group">
               <button 
-                onClick={handleIOSView}
+                onClick={handleIOSDownload}
                 className="ios-view-button"
               >
-                Open in New Tab
+                📥 Download PDF
               </button>
               
               <button 
-                onClick={handleDirectView}
+                onClick={handleIOSView}
                 className="ios-view-button ios-view-button-secondary"
               >
-                View in Current Tab
+                Open in New Tab
               </button>
             </div>
 
             <div className="ios-instructions">
-              <h3>Why This Happens:</h3>
+              <h3>Best Experience on iOS:</h3>
               <ul>
-                <li><strong>iOS Limitation:</strong> Chrome, Safari, and other iOS browsers can't display full PDFs in iframes</li>
-                <li><strong>New Tab:</strong> Opens PDF in a new tab (recommended)</li>
-                <li><strong>Current Tab:</strong> Replaces this page with the PDF</li>
-                <li>Use pinch-to-zoom to navigate</li>
-                <li>Scroll vertically to read all pages</li>
-                <li>This is normal behavior for iOS browsers</li>
+                <li><strong>📥 Download PDF:</strong> Get the full PDF with all pages (recommended)</li>
+                <li><strong>Open in New Tab:</strong> View in browser (may show only first page)</li>
+                <li>Downloaded PDF opens in your default PDF app</li>
+                <li>Full zoom, scroll, and navigation features</li>
+                <li>Works offline after download</li>
+                <li>No browser limitations</li>
               </ul>
             </div>
           </div>
