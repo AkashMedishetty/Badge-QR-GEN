@@ -13,16 +13,12 @@ const nextConfig = {
     optimizeCss: true,
   },
   
-  // Headers for better caching and compression
+  // Headers for better caching and security
   async headers() {
     return [
       {
         source: '/brochure.pdf',
         headers: [
-          {
-            key: 'Content-Encoding',
-            value: 'gzip',
-          },
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
@@ -42,7 +38,7 @@ const nextConfig = {
           },
           {
             key: 'X-Frame-Options',
-            value: 'DENY',
+            value: 'SAMEORIGIN',
           },
           {
             key: 'X-XSS-Protection',
