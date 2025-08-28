@@ -34,22 +34,6 @@ export default function PDFViewer() {
     const isIOS = isIOSUserAgent || isIOSPlatform || isIOSVendor || 
                   (hasIOSFeatures && (isSafariIOS || isChromeIOS || isFirefoxIOS || isEdgeIOS))
     
-    // Debug logging
-    console.log('=== iOS Detection Debug ===')
-    console.log('User Agent:', userAgent)
-    console.log('Platform:', platform)
-    console.log('Vendor:', navigator.vendor)
-    console.log('isIOSUserAgent:', isIOSUserAgent)
-    console.log('isIOSPlatform:', isIOSPlatform)
-    console.log('isIOSVendor:', isIOSVendor)
-    console.log('hasIOSFeatures:', hasIOSFeatures)
-    console.log('isSafariIOS:', isSafariIOS)
-    console.log('isChromeIOS:', isChromeIOS)
-    console.log('isFirefoxIOS:', isFirefoxIOS)
-    console.log('isEdgeIOS:', isEdgeIOS)
-    console.log('Final isIOS:', isIOS)
-    console.log('========================')
-    
     setIsIOS(isIOS)
 
     // Simple timeout
@@ -252,21 +236,6 @@ export default function PDFViewer() {
   // Non-iOS rendering with iframe
   return (
     <div className="pdf-container">
-      {/* Debug info */}
-      <div style={{
-        position: 'absolute',
-        top: '10px',
-        left: '10px',
-        background: 'rgba(0,0,0,0.8)',
-        color: 'white',
-        padding: '10px',
-        borderRadius: '5px',
-        fontSize: '12px',
-        zIndex: 1000
-      }}>
-        Debug: isIOS = {isIOS.toString()}
-      </div>
-      
       <iframe
         src="/brochure.pdf"
         className="pdf-viewer"
