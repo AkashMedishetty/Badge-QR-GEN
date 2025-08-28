@@ -8,31 +8,47 @@ export default function PDFViewer() {
   const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
-    // Detect iOS devices (including Chrome on iOS)
+    // Comprehensive iOS detection
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+    const platform = navigator.platform || ''
     
-    // Check for iOS in user agent (covers Safari, Chrome, Firefox, etc. on iOS)
-    const isIOSDevice = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream
+    // Multiple iOS detection methods
+    const isIOSUserAgent = /iPad|iPhone|iPod/.test(userAgent)
+    const isIOSPlatform = /iPad|iPhone|iPod/.test(platform)
+    const isIOSVendor = /iPad|iPhone|iPod/.test(navigator.vendor || '')
     
-    // Additional iOS detection methods
-    const isIOSByPlatform = /iPad|iPhone|iPod/.test(navigator.platform)
-    const isIOSByTouchPoints = navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform)
+    // Check for iOS-specific features
+    const hasIOSFeatures = (
+      'ontouchend' in document ||
+      navigator.maxTouchPoints > 1 ||
+      /MacIntel/.test(platform) && navigator.maxTouchPoints > 1
+    )
     
-    // Check if it's Chrome on iOS (Chrome on iOS has PDF iframe limitations)
-    const isChromeOnIOS = /CriOS/.test(userAgent) || (/Chrome/.test(userAgent) && /iPad|iPhone|iPod/.test(userAgent))
+    // Check for specific iOS browsers
+    const isSafariIOS = /Safari/.test(userAgent) && /iPad|iPhone|iPod/.test(userAgent)
+    const isChromeIOS = /CriOS/.test(userAgent) || (/Chrome/.test(userAgent) && /iPad|iPhone|iPod/.test(userAgent))
+    const isFirefoxIOS = /FxiOS/.test(userAgent)
+    const isEdgeIOS = /EdgiOS/.test(userAgent)
     
-    const isIOS = isIOSDevice || isIOSByPlatform || isIOSByTouchPoints || isChromeOnIOS
+    // Final iOS detection
+    const isIOS = isIOSUserAgent || isIOSPlatform || isIOSVendor || 
+                  (hasIOSFeatures && (isSafariIOS || isChromeIOS || isFirefoxIOS || isEdgeIOS))
     
     // Debug logging
+    console.log('=== iOS Detection Debug ===')
     console.log('User Agent:', userAgent)
-    console.log('Platform:', navigator.platform)
-    console.log('isIOSDevice:', isIOSDevice)
-    console.log('isIOSByPlatform:', isIOSByPlatform)
-    console.log('isChromeOnIOS:', isChromeOnIOS)
+    console.log('Platform:', platform)
+    console.log('Vendor:', navigator.vendor)
+    console.log('isIOSUserAgent:', isIOSUserAgent)
+    console.log('isIOSPlatform:', isIOSPlatform)
+    console.log('isIOSVendor:', isIOSVendor)
+    console.log('hasIOSFeatures:', hasIOSFeatures)
+    console.log('isSafariIOS:', isSafariIOS)
+    console.log('isChromeIOS:', isChromeIOS)
+    console.log('isFirefoxIOS:', isFirefoxIOS)
+    console.log('isEdgeIOS:', isEdgeIOS)
     console.log('Final isIOS:', isIOS)
-    
-    // Temporary: Force iOS mode for testing (remove this later)
-    // setIsIOS(true)
+    console.log('========================')
     
     setIsIOS(isIOS)
 
@@ -89,68 +105,146 @@ export default function PDFViewer() {
     )
   }
 
-  // iOS-specific rendering - try iframe first, fallback to buttons if needed
+  // iOS-specific rendering - show download interface directly
   if (isIOS) {
     return (
       <div className="pdf-container">
-        <iframe
-          src="/brochure.pdf"
-          className="pdf-viewer"
-          title="Event Brochure"
-          onLoad={() => setLoading(false)}
-          onError={() => {
-            // If iframe fails, show the button interface
-            setError('iframe-failed')
-          }}
-          style={{
-            width: '100vw',
-            height: '100vh',
-            border: 'none',
-            background: 'white'
-          }}
-        />
-        {error === 'iframe-failed' && (
-          <div className="ios-pdf-container">
-                      <div className="ios-pdf-header">
+        <div className="ios-pdf-container">
+          <div className="ios-pdf-header">
             <h1>Event Brochure</h1>
             <p>Download the PDF to view all pages with full functionality</p>
           </div>
-            
-            <div className="ios-pdf-preview">
-              <div className="pdf-icon">📄</div>
-              <h2>Event Brochure.pdf</h2>
-              <p>Download to view all pages with full functionality</p>
-            </div>
-
-            <div className="ios-button-group">
-              <button 
-                onClick={handleIOSDownload}
-                className="ios-view-button"
-              >
-                📥 Download PDF
-              </button>
-              
-              <button 
-                onClick={handleIOSView}
-                className="ios-view-button ios-view-button-secondary"
-              >
-                Open in New Tab
-              </button>
-            </div>
-
-            <div className="ios-instructions">
-              <h3>Best Experience on iOS:</h3>
-              <ul>
-                <li><strong>📥 Download PDF:</strong> Get the full PDF with all pages (recommended)</li>
-                <li><strong>Open in New Tab:</strong> View in browser (may show only first page)</li>
-                <li>Downloaded PDF opens in your default PDF app</li>
-                <li>Full zoom, scroll, and navigation features</li>
-                <li>Works offline after download</li>
-                <li>No browser limitations</li>
-              </ul>
-            </div>
+          
+          <div className="ios-pdf-preview">
+            <div className="pdf-icon">📄</div>
+            <h2>Event Brochure.pdf</h2>
+            <p>Download to view all pages with full functionality</p>
           </div>
-        )}
+
+          <div className="ios-button-group">
+            <button 
+              onClick={handleIOSDownload}
+              className="ios-view-button"
+            >
+              📥 Download PDF
+            </button>
+            
+            <button 
+              onClick={handleIOSView}
+              className="ios-view-button ios-view-button-secondary"
+            >
+              Open in New Tab
+            </button>
+          </div>
+
+          <div className="ios-instructions">
+            <h3>Best Experience on iOS:</h3>
+            <ul>
+              <li><strong>📥 Download PDF:</strong> Get the full PDF with all pages (recommended)</li>
+              <li><strong>Open in New Tab:</strong> View in browser (may show only first page)</li>
+              <li>Downloaded PDF opens in your default PDF app</li>
+              <li>Full zoom, scroll, and navigation features</li>
+              <li>Works offline after download</li>
+              <li>No browser limitations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Fallback for iOS if detection fails - show download interface
+  if (error === 'ios-fallback') {
+    return (
+      <div className="pdf-container">
+        <div className="ios-pdf-container">
+          <div className="ios-pdf-header">
+            <h1>Event Brochure</h1>
+            <p>Download the PDF to view all pages with full functionality</p>
+          </div>
+          
+          <div className="ios-pdf-preview">
+            <div className="pdf-icon">📄</div>
+            <h2>Event Brochure.pdf</h2>
+            <p>Download to view all pages with full functionality</p>
+          </div>
+
+          <div className="ios-button-group">
+            <button 
+              onClick={handleIOSDownload}
+              className="ios-view-button"
+            >
+              📥 Download PDF
+            </button>
+            
+            <button 
+              onClick={handleIOSView}
+              className="ios-view-button ios-view-button-secondary"
+            >
+              Open in New Tab
+            </button>
+          </div>
+
+          <div className="ios-instructions">
+            <h3>Best Experience on iOS:</h3>
+            <ul>
+              <li><strong>📥 Download PDF:</strong> Get the full PDF with all pages (recommended)</li>
+              <li><strong>Open in New Tab:</strong> View in browser (may show only first page)</li>
+              <li>Downloaded PDF opens in your default PDF app</li>
+              <li>Full zoom, scroll, and navigation features</li>
+              <li>Works offline after download</li>
+              <li>No browser limitations</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Legacy iOS fallback (if iframe fails)
+  if (error === 'iframe-failed') {
+    return (
+      <div className="pdf-container">
+        <div className="ios-pdf-container">
+          <div className="ios-pdf-header">
+            <h1>Event Brochure</h1>
+            <p>Download the PDF to view all pages with full functionality</p>
+          </div>
+          
+          <div className="ios-pdf-preview">
+            <div className="pdf-icon">📄</div>
+            <h2>Event Brochure.pdf</h2>
+            <p>Download to view all pages with full functionality</p>
+          </div>
+
+          <div className="ios-button-group">
+            <button 
+              onClick={handleIOSDownload}
+              className="ios-view-button"
+            >
+              📥 Download PDF
+            </button>
+            
+            <button 
+              onClick={handleIOSView}
+              className="ios-view-button ios-view-button-secondary"
+            >
+              Open in New Tab
+            </button>
+          </div>
+
+          <div className="ios-instructions">
+            <h3>Best Experience on iOS:</h3>
+            <ul>
+              <li><strong>📥 Download PDF:</strong> Get the full PDF with all pages (recommended)</li>
+              <li><strong>Open in New Tab:</strong> View in browser (may show only first page)</li>
+              <li>Downloaded PDF opens in your default PDF app</li>
+              <li>Full zoom, scroll, and navigation features</li>
+              <li>Works offline after download</li>
+              <li>No browser limitations</li>
+            </ul>
+          </div>
+        </div>
       </div>
     )
   }
@@ -178,7 +272,15 @@ export default function PDFViewer() {
         className="pdf-viewer"
         title="Event Brochure"
         onLoad={() => setLoading(false)}
-        onError={() => setError('Failed to load PDF. Please try again.')}
+        onError={() => {
+          // If iframe fails on what might be iOS, show download interface
+          const userAgent = navigator.userAgent || ''
+          if (/iPad|iPhone|iPod/.test(userAgent)) {
+            setError('ios-fallback')
+          } else {
+            setError('Failed to load PDF. Please try again.')
+          }
+        }}
         style={{
           width: '100vw',
           height: '100vh',
