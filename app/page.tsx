@@ -8,10 +8,21 @@ export default function PDFViewer() {
   const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
-    // Detect iOS devices
+    // Detect iOS devices (including Chrome on iOS)
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+    
+    // Check for iOS in user agent (covers Safari, Chrome, Firefox, etc. on iOS)
     const isIOSDevice = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream
-    setIsIOS(isIOSDevice)
+    
+    // Additional iOS detection methods
+    const isIOSByPlatform = /iPad|iPhone|iPod/.test(navigator.platform)
+    const isIOSByTouchPoints = navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform)
+    
+    // Check if it's Chrome on iOS (Chrome on iOS has PDF iframe limitations)
+    const isChromeOnIOS = /CriOS/.test(userAgent) || (/Chrome/.test(userAgent) && /iPad|iPhone|iPod/.test(userAgent))
+    
+    const isIOS = isIOSDevice || isIOSByPlatform || isIOSByTouchPoints || isChromeOnIOS
+    setIsIOS(isIOS)
 
     // Simple timeout
     const timeout = setTimeout(() => {
@@ -82,10 +93,10 @@ export default function PDFViewer() {
         />
         {error === 'iframe-failed' && (
           <div className="ios-pdf-container">
-            <div className="ios-pdf-header">
-              <h1>Event Brochure</h1>
-              <p>Choose how you'd like to view the brochure</p>
-            </div>
+                      <div className="ios-pdf-header">
+            <h1>Event Brochure</h1>
+            <p>iOS browsers have PDF viewing limitations. Choose your preferred method:</p>
+          </div>
             
             <div className="ios-pdf-preview">
               <div className="pdf-icon">📄</div>
@@ -110,13 +121,14 @@ export default function PDFViewer() {
             </div>
 
             <div className="ios-instructions">
-              <h3>Viewing Options:</h3>
+              <h3>Why This Happens:</h3>
               <ul>
+                <li><strong>iOS Limitation:</strong> Chrome, Safari, and other iOS browsers can't display full PDFs in iframes</li>
                 <li><strong>New Tab:</strong> Opens PDF in a new tab (recommended)</li>
                 <li><strong>Current Tab:</strong> Replaces this page with the PDF</li>
                 <li>Use pinch-to-zoom to navigate</li>
                 <li>Scroll vertically to read all pages</li>
-                <li>Works in all browsers (Chrome, Safari, Firefox, etc.)</li>
+                <li>This is normal behavior for iOS browsers</li>
               </ul>
             </div>
           </div>

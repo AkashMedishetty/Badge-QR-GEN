@@ -8,10 +8,21 @@ export default function PDFViewer() {
   const [isIOS, setIsIOS] = useState(false)
 
   useEffect(() => {
-    // Detect iOS devices
+    // Detect iOS devices (including Chrome on iOS)
     const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera
+    
+    // Check for iOS in user agent (covers Safari, Chrome, Firefox, etc. on iOS)
     const isIOSDevice = /iPad|iPhone|iPod/.test(userAgent) && !(window as any).MSStream
-    setIsIOS(isIOSDevice)
+    
+    // Additional iOS detection methods
+    const isIOSByPlatform = /iPad|iPhone|iPod/.test(navigator.platform)
+    const isIOSByTouchPoints = navigator.maxTouchPoints && navigator.maxTouchPoints > 2 && /MacIntel/.test(navigator.platform)
+    
+    // Check if it's Chrome on iOS (Chrome on iOS has PDF iframe limitations)
+    const isChromeOnIOS = /CriOS/.test(userAgent) || (/Chrome/.test(userAgent) && /iPad|iPhone|iPod/.test(userAgent))
+    
+    const isIOS = isIOSDevice || isIOSByPlatform || isIOSByTouchPoints || isChromeOnIOS
+    setIsIOS(isIOS)
 
     // Simple timeout
     const timeout = setTimeout(() => {
