@@ -79,9 +79,6 @@ export default function PDFViewer() {
             border: 'none',
             background: 'white'
           }}
-          // Production optimization attributes
-          allow="fullscreen"
-          sandbox="allow-same-origin allow-scripts allow-forms"
         />
         {error === 'iframe-failed' && (
           <div className="ios-pdf-container">
@@ -143,9 +140,6 @@ export default function PDFViewer() {
           border: 'none',
           background: 'white'
         }}
-        // Production optimization attributes
-        allow="fullscreen"
-        sandbox="allow-same-origin allow-scripts allow-forms"
       />
     </div>
   )

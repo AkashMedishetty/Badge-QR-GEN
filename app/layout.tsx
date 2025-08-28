@@ -35,7 +35,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         {/* Production optimization for PDF rendering */}
         <meta httpEquiv="X-Content-Type-Options" content="nosniff" />
-        <meta httpEquiv="X-Frame-Options" content="SAMEORIGIN" />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
